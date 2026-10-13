@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#a91f36">
+  <title>CicloSangue — doar faz diferença</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <section class="auth-screen hidden" id="auth-screen" aria-label="Acesso ao CicloSangue">
+    <div class="auth-brand-panel">
+      <a class="brand auth-brand" href="#" aria-label="CicloSangue"><span class="brand-mark" aria-hidden="true">♥</span><span>Ciclo<span>Sangue</span></span></a>
+      <div class="auth-message"><span class="auth-kicker">UM GESTO, MUITAS VIDAS</span><h1>Seu próximo gesto de cuidado começa aqui.</h1><p>Entre ou crie um cadastro demonstrativo para explorar a jornada de doação.</p><div class="auth-decoration" aria-hidden="true"><span>♥</span><i></i><b>✦</b></div></div>
+      <p class="auth-brand-footer">Protótipo demonstrativo · Não conectado ao hemocentro</p>
+    </div>
+    <div class="auth-form-panel">
+      <div class="auth-form-wrap">
+        <div class="auth-mobile-brand brand"><span class="brand-mark" aria-hidden="true">♥</span><span>Ciclo<span>Sangue</span></span></div>
+        <button class="auth-back" type="button" data-auth-close>← Voltar à apresentação</button>
+        <p class="auth-prompt" id="auth-prompt" aria-live="polite"></p>
+        <div class="auth-tabs" role="tablist" aria-label="Acesso">
+          <button class="auth-tab active" id="login-tab" type="button" role="tab" aria-selected="true" aria-controls="login-form">Entrar</button>
+          <button class="auth-tab" id="register-tab" type="button" role="tab" aria-selected="false" aria-controls="register-form">Criar cadastro</button>
+        </div>
+        <form class="auth-form active" id="login-form">
+          <p class="eyebrow">BEM-VINDO(A) DE VOLTA</p><h2>Entre na sua conta</h2><p class="muted">Use o e-mail e a senha do cadastro demonstrativo.</p>
+          <label>E-mail<input type="email" id="login-email" autocomplete="email" maxlength="100" placeholder="voce@exemplo.com" required></label>
+          <label>Senha<input type="password" id="login-password" autocomplete="current-password" minlength="8" maxlength="128" placeholder="Sua senha demonstrativa" required></label>
+          <p class="auth-error" id="login-error" role="alert"></p>
+          <button class="button button-primary auth-submit" type="submit">Entrar <span>→</span></button>
+          <p class="auth-switch">Ainda não tem cadastro? <button type="button" data-auth-mode="register">Criar uma conta</button></p>
+        </form>
+        <form class="auth-form" id="register-form">
+          <p class="eyebrow">COMECE POR AQUI</p><h2>Crie seu cadastro</h2><p class="muted">Preencha os dados para iniciar uma simulação.</p>
+          <label>Nome completo<input type="text" id="register-name" autocomplete="name" maxlength="70" placeholder="Como podemos chamar você?" required></label>
+          <label>E-mail<input type="email" id="register-email" autocomplete="email" maxlength="100" placeholder="voce@exemplo.com" required></label>
+          <label>Senha demonstrativa<input type="password" id="register-password" autocomplete="new-password" minlength="8" maxlength="128" placeholder="Mínimo de 8 caracteres" required></label>
+          <label>Tipo sanguíneo <span class="optional-label">(opcional)</span><select id="register-blood"><option value="">Prefiro não informar</option><option>A+</option><option>A−</option><option>B+</option><option>B−</option><option>AB+</option><option>AB−</option><option>O+</option><option>O−</option></select></label>
+          <p class="auth-error" id="register-error" role="alert"></p>
+          <button class="button button-primary auth-submit" type="submit">Criar cadastro <span>→</span></button>
+          <p class="auth-switch">Já tem cadastro? <button type="button" data-auth-mode="login">Entrar</button></p>
+        </form>
+        <div class="auth-privacy"><span>ⓘ</span><p>Este protótipo não tem servidor nem autenticação real. Cadastros e dados ficam neste navegador; use apenas informações e senhas fictícias.</p></div>
+      </div>
+    </div>
+  </section>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#inicio" aria-label="CicloSangue, início">
+        <span class="brand-mark" aria-hidden="true">♥</span>
+        <span>Ciclo<span>Sangue</span></span>
+      </a>
+      <div class="sidebar-label">EXPLORAR</div>
+      <nav class="main-nav" aria-label="Navegação principal">
+        <button class="nav-link active" data-view="inicio"><span>⌂</span> Início</button>
+        <button class="nav-link" data-view="agendar"><span>▣</span> Agendar doação</button>
+        <button class="nav-link" data-view="locais"><span>◎</span> Onde doar</button>
+        <button class="nav-link" data-view="historico"><span>◷</span> Meu histórico</button>
+        <button class="nav-link" data-view="informacoes"><span>ⓘ</span> Informações</button>
+        <button class="nav-link" data-view="notificacoes"><span>♧</span> Notificações <i id="notification-badge">2</i></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="help-card"><span class="help-icon">♡</span><strong>Uma doação pode salvar vidas.</strong><p>Pequenos gestos fazem uma grande diferença.</p></div>
+        <button class="nav-link" data-view="perfil"><span>◉</span> Meu perfil</button>
+        <button class="nav-link logout-link" data-logout><span>↪</span> Sair da conta</button>
+        <p class="sidebar-foot">Protótipo demonstrativo<br>Informações a confirmar com o hemocentro</p>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="mobile-brand brand"><span class="brand-mark" aria-hidden="true">♥</span><span>Ciclo<span>Sangue</span></span></div>
+        <div class="breadcrumb"><span>CicloSangue</span><b>/</b><strong id="page-name">Início</strong></div>
+        <div class="top-actions">
+          <button class="icon-button" data-view="notificacoes" aria-label="Abrir notificações">♧<i class="notification-dot"></i></button>
+          <button class="button button-outline auth-header-button" type="button" data-open-auth="login">Entrar</button>
+          <button class="button button-primary auth-header-button" type="button" data-open-auth="register">Criar cadastro</button>
+          <button class="profile-chip signed-in-only" data-view="perfil"><span class="avatar">L</span><span id="top-profile-name">Doador(a)</span><span class="chevron">⌄</span></button>
+        </div>
+      </header>
+
+      <div class="mobile-nav" aria-label="Navegação rápida">
+        <button class="mobile-nav-link active" data-view="inicio"><span>⌂</span>Início</button>
+        <button class="mobile-nav-link" data-view="agendar"><span>▣</span>Agendar</button>
+        <button class="mobile-nav-link" data-view="historico"><span>◷</span>Histórico</button>
+        <button class="mobile-nav-link" data-view="perfil"><span>◉</span>Perfil</button>
+      </div>
+
+      <section class="page active" id="view-inicio">
+        <div class="welcome-row">
+          <div><p class="eyebrow" id="today-label"></p><h1>Olá, <span id="welcome-name">bem-vindo(a) ao CicloSangue</span> <span class="wave">✦</span></h1><p class="muted" id="welcome-subtitle">Conheça a plataforma. Entre ou cadastre-se quando quiser simular um agendamento.</p></div>
+          <div class="blood-type"><span class="blood-drop">♥</span><div><small>Meu tipo sanguíneo</small><strong id="home-blood-type">Não informado</strong></div><button data-view="perfil" aria-label="Editar perfil">↗</button></div>
+        </div>
+        <div class="home-grid">
+          <div class="primary-column">
+            <article class="hero-card">
+              <div class="hero-content"><span class="hero-kicker"><span class="pulse"></span> CADA GESTO CONTA</span><h2>Doe sangue.<br>Compartilhe esperança.</h2><p>Encontre um hemocentro e escolha um horário para sua próxima doação.</p><button class="button button-light" data-view="agendar">Agendar minha doação <span>→</span></button></div>
+              <div class="hero-art" aria-hidden="true"><div class="art-circle circle-one"></div><div class="art-circle circle-two"></div><div class="big-drop">♥</div><span class="spark spark-one">✦</span><span class="spark spark-two">✧</span></div>
+            </article>
+            <div class="section-heading"><div><h2>Atalhos para você</h2><p>Acesse o que precisa com facilidade.</p></div></div>
+            <div class="shortcut-grid">
+              <button class="shortcut-card" data-view="agendar"><span class="shortcut-icon red">▣</span><span><strong>Agendar doação</strong><small>Escolha local e horário</small></span><b>→</b></button>
+              <button class="shortcut-card" data-view="locais"><span class="shortcut-icon green">◎</span><span><strong>Onde doar</strong><small>Encontre um hemocentro</small></span><b>→</b></button>
+              <button class="shortcut-card" data-view="historico"><span class="shortcut-icon blue">◷</span><span><strong>Meu histórico</strong><small>Acompanhe suas doações</small></span><b>→</b></button>
+            </div>
+            <article class="campaign-card"><div class="campaign-symbol">♡</div><div><span class="eyebrow">JUNTOS PELA VIDA</span><h3>Uma atitude que circula esperança</h3><p>Converse com quem você gosta e ajude a espalhar informações confiáveis sobre doação.</p></div><button class="text-button" data-view="informacoes">Saiba mais <span>→</span></button></article>
+          </div>
+          <aside class="right-column">
+            <article class="panel next-panel"><div class="panel-heading"><h3>Próximo passo</h3><span class="status-pill">Vamos juntos</span></div><div class="readiness"><span class="readiness-icon">♥</span><div><strong>Consulte o hemocentro</strong><p>A equipe confirma se você está apto(a) para doar.</p></div></div><div class="soft-note"><span>ⓘ</span><p>A aptidão é avaliada por profissionais a cada atendimento.</p></div><button class="button button-primary full-button" data-view="agendar">Encontrar um horário <span>→</span></button></article>
+            <article class="panel mini-history"><div class="panel-heading"><h3>Minha jornada</h3><button class="plain-link" data-view="historico">Ver tudo</button></div><div class="empty-state"><span class="empty-icon">◷</span><strong>Seu histórico começa aqui</strong><p>Depois da sua primeira doação registrada, ela aparecerá nesta área.</p></div></article>
+            <article class="quote-card"><span>“</span><p>Doar sangue é um gesto simples que pode significar muito.</p><small>Um ciclo de cuidado começa com você.</small></article>
+          </aside>
+        </div>
+      </section>
+
+      <section class="page" id="view-agendar">
+        <div class="page-intro"><p class="eyebrow">SUA PRÓXIMA DOAÇÃO</p><h1>Agendar doação</h1><p class="muted">Escolha um local, veja as opções de horário e confirme seu agendamento.</p></div>
+        <div class="booking-layout">
+          <div class="booking-main panel">
+            <div class="steps" aria-label="Etapas do agendamento"><div class="step active" data-step-indicator="1"><span>1</span><small>Local</small></div><i></i><div class="step" data-step-indicator="2"><span>2</span><small>Data e horário</small></div><i></i><div class="step" data-step-indicator="3"><span>3</span><small>Confirmação</small></div></div>
+            <div class="booking-step active" id="booking-step-1">
+              <h2>Escolha onde deseja doar</h2><p class="muted">Selecione uma unidade para continuar.</p>
+              <label class="search-field"><span>⌕</span><input id="location-search" type="search" placeholder="Buscar por nome ou cidade"></label>
+              <div class="location-list" id="booking-location-list"></div>
+              <div class="form-actions end"><button class="button button-primary" id="to-step-2" disabled>Continuar <span>→</span></button></div>
+            </div>
+            <div class="booking-step" id="booking-step-2">
+              <button class="back-link" data-booking-back="1">← Voltar aos locais</button><h2>Escolha a data e o horário</h2><p class="muted">As opções abaixo são demonstrativas e precisam ser confirmadas pela unidade.</p>
+              <div class="date-picker" id="date-picker"></div><h3 class="subheading">Horários de exemplo</h3><div class="time-grid" id="time-grid"></div>
+              <div class="form-actions"><button class="button button-outline" data-booking-back="1">Voltar</button><button class="button button-primary" id="to-step-3" disabled>Revisar agendamento <span>→</span></button></div>
+            </div>
+            <div class="booking-step" id="booking-step-3">
+              <button class="back-link" data-booking-back="2">← Voltar à data e horário</button><div class="confirm-icon">✓</div><h2>Revise os detalhes</h2><p class="muted">Este protótipo não envia informações para o hemocentro.</p>
+              <div class="review-card" id="booking-review"></div><label class="consent-check"><input type="checkbox" id="confirm-consent"><span>Entendo que este é um agendamento demonstrativo e que devo confirmar o atendimento diretamente com o hemocentro.</span></label>
+              <div class="form-actions"><button class="button button-outline" data-booking-back="2">Voltar</button><button class="button button-primary" id="confirm-booking" disabled>Confirmar demonstração <span>✓</span></button></div>
+            </div>
+          </div>
+          <aside class="panel booking-aside"><div class="aside-illustration">♥</div><h3>Antes de agendar</h3><ul><li>O agendamento não confirma sua aptidão para doar.</li><li>Leve um documento oficial com foto no atendimento.</li><li>Confirme horários, endereço e orientações com a unidade.</li></ul><div class="disclaimer">Dados de locais e horários nesta demonstração são fictícios.</div></aside>
+        </div>
+      </section>
+
+      <section class="page" id="view-locais">
+        <div class="page-intro"><p class="eyebrow">PERTO DE VOCÊ</p><h1>Onde doar</h1><p class="muted">Consulte unidades de exemplo e confirme os dados diretamente com o hemocentro.</p></div>
+        <div class="panel locations-panel"><label class="search-field"><span>⌕</span><input id="places-search" type="search" placeholder="Buscar por nome ou cidade"></label><div class="map-placeholder"><div class="map-roads"></div><span class="map-pin pin-a">♥</span><span class="map-pin pin-b">♥</span><span class="map-pin pin-c">♥</span><div class="map-caption">Visualização ilustrativa · mapa não conectado</div></div><div id="places-list" class="places-list"></div></div>
+      </section>
+
+      <section class="page" id="view-historico">
+        <div class="page-intro"><p class="eyebrow">SEU CAMINHO DE CUIDADO</p><h1>Meu histórico</h1><p class="muted">Acompanhe os agendamentos demonstrativos salvos neste navegador.</p></div>
+        <div class="history-summary"><div class="summary-card"><span class="summary-icon red">♥</span><div><small>Doações registradas</small><strong id="donation-count">0</strong></div></div><div class="summary-card"><span class="summary-icon green">▣</span><div><small>Agendamentos demonstrativos</small><strong id="appointment-count">0</strong></div></div><div class="summary-card"><span class="summary-icon blue">✦</span><div><small>Seu impacto</small><strong>Faz a diferença</strong></div></div></div>
+        <div class="panel history-panel"><div class="panel-heading"><div><h2>Atividade recente</h2><p class="muted">Informações guardadas apenas neste dispositivo.</p></div></div><div id="history-list"></div></div>
+      </section>
+
+      <section class="page" id="view-informacoes">
+        <div class="page-intro"><p class="eyebrow">INFORMAÇÃO E CUIDADO</p><h1>Informações para doar</h1><p class="muted">Conteúdo geral para orientação. A equipe do hemocentro é quem avalia cada situação.</p></div>
+        <div class="info-banner"><span>ⓘ</span><p><strong>Importante:</strong> os critérios e intervalos podem variar conforme as normas vigentes e a avaliação profissional. Confirme sempre com o hemocentro antes de se deslocar.</p></div>
+        <div class="info-grid">
+          <article class="info-card"><span class="info-icon red">♡</span><h3>Quem pode doar?</h3><p>A aptidão depende de critérios de saúde e segurança avaliados antes de cada doação. Não é possível confirmá-la por este aplicativo.</p><button class="accordion-toggle" aria-expanded="false">O que acontece na avaliação? <span>＋</span></button><div class="accordion-content">A equipe pode perguntar sobre seu estado de saúde, medicamentos e outros fatores relevantes. Responda com sinceridade e tire suas dúvidas com os profissionais.</div></article>
+          <article class="info-card"><span class="info-icon purple">◷</span><h3>Intervalo entre doações</h3><p>O tempo recomendado pode variar de acordo com a pessoa e com as regras aplicáveis.</p><button class="accordion-toggle" aria-expanded="false">Quando posso voltar a doar? <span>＋</span></button><div class="accordion-content">Consulte a equipe do hemocentro para saber seu intervalo individual. O histórico desta demonstração não substitui o registro oficial.</div></article>
+          <article class="info-card"><span class="info-icon green">✦</span><h3>Como se preparar</h3><p>Consulte as instruções atualizadas da unidade antes de ir doar.</p><button class="accordion-toggle" aria-expanded="false">O que levar? <span>＋</span></button><div class="accordion-content">A entrevista menciona a apresentação de documento com foto. Confirme com o hemocentro se há outras orientações para o dia do atendimento.</div></article>
+          <article class="info-card"><span class="info-icon blue">ⓘ</span><h3>Etapas do atendimento</h3><p>O processo inclui cadastro, avaliação e, quando indicada, a coleta.</p><button class="accordion-toggle" aria-expanded="false">Como funciona? <span>＋</span></button><div class="accordion-content">Segundo a entrevista local: cadastro ou atualização, avaliação de saúde, confirmação de aptidão, orientações e encaminhamento para coleta. O fluxo pode variar por unidade.</div></article>
+        </div>
+      </section>
+
+      <section class="page" id="view-notificacoes">
+        <div class="page-intro"><p class="eyebrow">FIQUE POR DENTRO</p><h1>Notificações</h1><p class="muted">Lembretes e informações de exemplo. Este protótipo não envia notificações externas.</p></div>
+        <div class="panel notifications-panel" id="notifications-list"></div>
+      </section>
+
+      <section class="page" id="view-perfil">
+        <div class="page-intro"><p class="eyebrow">SEUS DADOS</p><h1>Meu perfil</h1><p class="muted">Edite seus dados de demonstração. Eles ficam salvos apenas neste navegador.</p></div>
+        <div class="panel profile-panel"><div class="profile-heading"><div class="large-avatar" id="profile-initial">L</div><div><h2 id="profile-display-name">Letícia</h2><p class="muted">Doador(a) CicloSangue</p></div></div><form id="profile-form" class="profile-form"><label>Nome completo<input id="profile-name" type="text" maxlength="70" required></label><label>E-mail<input id="profile-email" type="email" maxlength="100" placeholder="voce@exemplo.com" readonly></label><label>Tipo sanguíneo <select id="profile-blood"><option value="">Prefiro não informar</option><option>A+</option><option>A−</option><option>B+</option><option>B−</option><option>AB+</option><option>AB−</option><option>O+</option><option>O−</option></select></label><div class="form-actions end"><button class="button button-primary" type="submit">Salvar alterações <span>✓</span></button></div></form><div class="privacy-note">🔒 Seus dados ficam armazenados somente no armazenamento local deste navegador. Não informe dados pessoais ou de saúde reais.</div><button class="button button-outline profile-logout" data-logout>Sair da conta</button></div>
+      </section>
+      <footer class="page-footer">CicloSangue · Protótipo para apresentação · Não substitui os canais oficiais do hemocentro</footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <dialog id="appointment-dialog" class="success-dialog"><div class="success-check">✓</div><h2>Agendamento de demonstração confirmado!</h2><p>Os detalhes foram salvos neste navegador. Entre em contato com o hemocentro para confirmar um atendimento real.</p><div id="success-details"></div><button class="button button-primary full-button" id="success-done">Voltar ao início</button></dialog>
+</body>
+</html>
